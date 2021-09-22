@@ -25,11 +25,7 @@ resource "google_container_cluster" "primary" {
   name            = var.name
   description     = var.description
   project         = var.project_id
-  resource_labels = {
-      cost_center  = var.costcenter
-      billing_id   = var.billingid
-      environment = var.env
-    }
+  resource_labels = var.cluster_resource_labels
 
   location          = local.location
   node_locations    = local.node_locations
@@ -170,19 +166,6 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  dynamic "private_cluster_config" {
-    for_each = var.enable_private_nodes ? [{
-      enable_private_nodes    = var.enable_private_nodes,
-      enable_private_endpoint = var.enable_private_endpoint
-      master_ipv4_cidr_block  = var.master_ipv4_cidr_block
-    }] : []
-
-    content {
-      enable_private_endpoint = private_cluster_config.value.enable_private_endpoint
-      enable_private_nodes    = private_cluster_config.value.enable_private_nodes
-      master_ipv4_cidr_block  = private_cluster_config.value.master_ipv4_cidr_block
-    }
-  }
 
   remove_default_node_pool = var.remove_default_node_pool
 
@@ -266,7 +249,6 @@ resource "google_container_node_pool" "pools" {
       local.node_pools_labels["all"],
       local.node_pools_labels[each.value["name"]],
     )
-
     metadata = merge(
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "cluster_name", true) ? { "cluster_name" = var.name } : {},
       lookup(lookup(local.node_pools_metadata, "default_values", {}), "node_pool", true) ? { "node_pool" = each.value["name"] } : {},

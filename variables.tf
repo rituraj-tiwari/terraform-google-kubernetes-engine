@@ -19,13 +19,11 @@
 variable "project_id" {
   type        = string
   description = "The project ID to host the cluster in (required)"
-  default = ""
 }
 
 variable "name" {
   type        = string
   description = "The name of the cluster (required)"
-  default = ""
 }
 
 variable "description" {
@@ -43,19 +41,18 @@ variable "regional" {
 variable "region" {
   type        = string
   description = "The region to host the cluster in (optional if zonal cluster / required if regional)"
-  default     = "us-central1"
+  default     = null
 }
 
 variable "zones" {
   type        = list(string)
   description = "The zones to host the cluster in (optional if regional cluster / required if zonal)"
-  default     = ["us-central1-a", "us-central1-b", "us-central1-c"]
+  default     = []
 }
 
 variable "network" {
   type        = string
   description = "The VPC network to host the cluster in (required)"
-  default = ""
 }
 
 variable "network_project_id" {
@@ -67,7 +64,6 @@ variable "network_project_id" {
 variable "subnetwork" {
   type        = string
   description = "The subnetwork to host the cluster in (required)"
-  default = ""
 }
 
 variable "kubernetes_version" {
@@ -77,15 +73,9 @@ variable "kubernetes_version" {
 }
 
 variable "master_authorized_networks" {
-  type        =  list(object({ cidr_block = string, display_name = string }))
+  type        = list(object({ cidr_block = string, display_name = string }))
   description = "List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically whitelists)."
-  default     = [(
-  {
-    cidr_block = "172.16.0.0/28",
-    display_name = "cidr_block"
-  }
-  )
-  ]
+  default     = []
 }
 
 variable "enable_vertical_pod_autoscaling" {
@@ -134,13 +124,11 @@ variable "maintenance_exclusions" {
 variable "ip_range_pods" {
   type        = string
   description = "The _name_ of the secondary subnet ip range to use for pods"
-  default = ""
 }
 
 variable "ip_range_services" {
   type        = string
   description = "The _name_ of the secondary subnet range to use for services"
-  default = ""
 }
 
 variable "initial_node_count" {
@@ -374,30 +362,6 @@ variable "skip_provisioners" {
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
   default     = 110
-}
-
-variable "deploy_using_private_endpoint" {
-  type        = bool
-  description = "(Beta) A toggle for Terraform and kubectl to connect to the master's internal IP address during deployment."
-  default     = false
-}
-
-variable "enable_private_endpoint" {
-  type        = bool
-  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint"
-  default     = false
-}
-
-variable "enable_private_nodes" {
-  type        = bool
-  description = "(Beta) Whether nodes have internal IP addresses only"
-  default     = false
-}
-
-variable "master_ipv4_cidr_block" {
-  type        = string
-  description = "(Beta) The IP range in CIDR notation to use for the hosted master network"
-  default     = "10.0.0.0/28"
 }
 
 variable "authenticator_security_group" {

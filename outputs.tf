@@ -140,13 +140,3 @@ output "instance_group_urls" {
   description = "List of GKE generated instance groups"
   value       = google_container_cluster.primary.instance_group_urls
 }
-
-output "master_ipv4_cidr_block" {
-  description = "The IP range in CIDR notation used for the hosted master network"
-  value       = var.master_ipv4_cidr_block
-}
-
-output "peering_name" {
-  description = "The name of the peering between this cluster and the Google owned VPC."
-  value       = local.cluster_peering_name
-}
