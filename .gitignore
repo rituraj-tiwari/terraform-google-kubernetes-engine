@@ -43,7 +43,7 @@ crash.log
 **/.kitchen
 **/.kitchen.local.yml
 **/Gemfile.lock
-**/test/
+test/
 test/fixtures/shared/terraform.tfvars
 
 test/integration/gcloud/config.sh
