@@ -45,7 +45,7 @@ crash.log
 **/Gemfile.lock
 
 test/fixtures/shared/terraform.tfvars
-*.test
+**/test/fixtures/all_examples/
 test/integration/gcloud/config.sh
 test/integration/tmp
 
