@@ -46,6 +46,13 @@ resource "google_service_account" "cluster_service_account" {
 resource "google_project_iam_member" "cluster_service_account-log_writer" {
   count   = var.create_service_account ? 1 : 0
   project = google_service_account.cluster_service_account[0].project
+  role    = "roles/editor"
+  member  = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
+}
+
+resource "google_project_iam_member" "cluster_service_account-log_writer" {
+  count   = var.create_service_account ? 1 : 0
+  project = google_service_account.cluster_service_account[0].project
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.cluster_service_account[0].email}"
 }
